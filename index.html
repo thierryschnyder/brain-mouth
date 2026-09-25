@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF4E4">
+  <meta name="color-scheme" content="light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Brain Mouth">
+  <title>Brain Mouth</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Icon sprite: every icon in the app comes from here, so they stay consistent. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.2v13.6a1 1 0 0 0 1.5.86l11-6.8a1 1 0 0 0 0-1.72l-11-6.8A1 1 0 0 0 8 5.2z" fill="currentColor"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11 12 3.8l8.5 7.2M5.8 9.4V20h4.6v-5.6h3.2V20h4.6V9.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9.2h3.6L12.5 5v14l-4.9-4.2H4z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15.6 9a4.2 4.2 0 0 1 0 6M18.3 6.4a8 8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-skip" viewBox="0 0 24 24"><path d="M4 5.8v12.4a.9.9 0 0 0 1.4.75L14.6 12.8a.95.95 0 0 0 0-1.6L5.4 5.05A.9.9 0 0 0 4 5.8z" fill="currentColor"/><rect x="16.4" y="5" width="3.4" height="14" rx="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 7v5.2l3.4 2.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20.2a2.1 2.1 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="4" r="1.4" fill="currentColor"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" fill="currentColor"/><rect x="8.2" y="5" width="7.6" height="12.6" rx="1" fill="#fff" opacity=".9"/><circle cx="12" cy="19.4" r=".9" fill="#fff"/></symbol>
+</svg>
+
+<main id="app">
+
+  <!-- ============ START SCREEN ============ -->
+  <section id="screen-home" class="screen screen-home is-active" aria-label="Start">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 120 100" class="logo-art">
+        <path class="logo-bubble" d="M22 12h76a14 14 0 0 1 14 14v34a14 14 0 0 1-14 14H56l-20 16v-16H22A14 14 0 0 1 8 60V26a14 14 0 0 1 14-14z"/>
+        <circle class="logo-dot d1" cx="38" cy="43" r="7"/>
+        <circle class="logo-dot d2" cx="60" cy="43" r="7"/>
+        <circle class="logo-dot d3" cx="82" cy="43" r="7"/>
+      </svg>
+    </div>
+
+    <div class="settings">
+      <div id="lang-list" class="lang-list" role="radiogroup" aria-label="Language"></div>
+
+      <div class="setting-row timer-setting" role="group" aria-label="Timer length in seconds">
+        <button class="round-btn small" id="time-minus" type="button" aria-label="Less time">
+          <svg><use href="#i-minus"/></svg>
+        </button>
+        <div class="time-display">
+          <svg class="time-icon" aria-hidden="true"><use href="#i-clock"/></svg>
+          <span id="time-value" class="time-value" aria-live="polite">30</span>
+        </div>
+        <button class="round-btn small" id="time-plus" type="button" aria-label="More time">
+          <svg><use href="#i-plus"/></svg>
+        </button>
+      </div>
+
+      <button id="skip-toggle" class="toggle" type="button" role="switch" aria-checked="true" aria-label="Skip button">
+        <svg class="toggle-icon" aria-hidden="true"><use href="#i-skip"/></svg>
+        <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
+      </button>
+    </div>
+
+    <button id="start-btn" class="big-play" type="button" aria-label="Start game">
+      <svg><use href="#i-play"/></svg>
+    </button>
+  </section>
+
+  <!-- ============ PASS THE PHONE ============ -->
+  <section id="screen-pass" class="screen screen-pass" aria-label="Pass the phone">
+    <div class="pass-art" aria-hidden="true">
+      <svg viewBox="0 0 260 150">
+        <g class="pass-face face-a">
+          <circle cx="40" cy="110" r="30"/>
+          <circle class="eye" cx="31" cy="104" r="3.6"/><circle class="eye" cx="49" cy="104" r="3.6"/>
+          <path class="mouth" d="M29 117q11 9 22 0"/>
+        </g>
+        <g class="pass-face face-b">
+          <circle cx="220" cy="110" r="30"/>
+          <circle class="eye" cx="211" cy="104" r="3.6"/><circle class="eye" cx="229" cy="104" r="3.6"/>
+          <path class="mouth" d="M209 117q11 9 22 0"/>
+        </g>
+        <path class="pass-arc" d="M70 72 Q130 0 190 72" />
+        <g class="pass-phone">
+          <use href="#i-phone" x="50" y="40" width="40" height="40"/>
+        </g>
+      </svg>
+    </div>
+
+    <button id="ready-btn" class="big-play pulse" type="button" aria-label="Ready, show the word">
+      <svg><use href="#i-play"/></svg>
+    </button>
+  </section>
+
+  <!-- ============ WORD + TIMER ============ -->
+  <section id="screen-play" class="screen screen-play" aria-label="Word">
+    <div class="word-area">
+      <div class="word-wrap">
+        <p id="word" class="word" lang="fr" aria-live="assertive"></p>
+      </div>
+      <button id="speak-btn" class="round-btn speak" type="button" aria-label="Say the word out loud">
+        <svg><use href="#i-speaker"/></svg>
+      </button>
+    </div>
+
+    <div class="timer" role="timer" aria-label="Seconds left">
+      <svg class="timer-ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle id="ring-fg" class="ring-fg" cx="60" cy="60" r="52"/>
+      </svg>
+      <span id="timer-num" class="timer-num">30</span>
+      <svg class="timer-bell" aria-hidden="true"><use href="#i-bell"/></svg>
+    </div>
+
+    <div class="play-bottom">
+      <button id="skip-btn" class="round-btn skip" type="button" aria-label="Skip, new word">
+        <svg><use href="#i-skip"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Home button: shared by the pass and play screens. Press and hold to leave, so a stray tap does nothing. -->
+  <button id="home-btn" class="home-btn" type="button" aria-label="Back to start (press and hold)" hidden>
+    <svg class="home-progress" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="25"/></svg>
+    <svg class="home-icon" aria-hidden="true"><use href="#i-home"/></svg>
+  </button>
+
+  <div id="flash" class="flash" aria-hidden="true"></div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
